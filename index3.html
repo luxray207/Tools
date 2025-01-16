@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lihat Kode Website</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-image: url('https://cdn.glitch.global/dcddab89-eab1-4af9-bdcf-ec7227e2b985/20250115_030120.jpg?v=1737020886167'); /* Ganti URL gambar di sini */
+            background-size: cover; /* Mengatur ukuran gambar agar menutupi seluruh layar */
+            background-position: center; /* Menempatkan gambar di tengah */
+            background-attachment: fixed; /* Membuat gambar tetap saat halaman di-scroll */
+            color: white; /* Warna teks agar kontras dengan gambar */
+        }
+        input[type="url"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            overflow-x: auto;
+            max-height: 400px;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <h1>Lihat Kode HTML Website</h1>
+    <form id="urlForm">
+        <label for="website">Masukkan URL Website:</label>
+        <input type="url" id="website" name="website" placeholder="https://example.com" required>
+        <button type="button" onclick="fetchWebsiteCode()">Tampilkan Kode</button>
+    </form>
+
+    <h2>Hasil Kode HTML:</h2>
+    <pre id="codeOutput">Kode HTML akan ditampilkan di sini...</pre>
+
+    <script>
+        function fetchWebsiteCode() {
+            const urlInput = document.getElementById("website").value;
+            const output = document.getElementById("codeOutput");
+
+            // Validasi URL
+            if (!urlInput.startsWith("http://") && !urlInput.startsWith("https://")) {
+                alert("Harap masukkan URL yang valid (http:// atau https://).");
+                return;
+            }
+
+            // Mengambil kode HTML dari website
+            fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(urlInput)}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Gagal mengambil data dari URL.");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    output.textContent = data.contents;
+                })
+                .catch(error => {
+                    output.textContent = `Error: ${error.message}`;
+                });
+        }
+    </script>
+</body>
+</html>
